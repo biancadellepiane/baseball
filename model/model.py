@@ -5,7 +5,7 @@ from database.DAO import DAO
 
 class Model:
     def __init__(self):
-        self._grafo = nx.DiGraph()
+        self._grafo = nx.Graph()
         self._idMap = {}
 
     def getAllYears(self):
