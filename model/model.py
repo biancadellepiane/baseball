@@ -27,7 +27,7 @@ class Model:
         for n1 in self._grafo.nodes:
             for n2 in self._grafo.nodes:
                 if n1 != n2:
-                    self._grafo.add_edge(n1, n2, weight=0)
+                    self._grafo.add_edge(n1, n2, weight=0) #inizio a inizializzare peso
 
         salaries = DAO.getSalaryOfTeam(year, self._idMap)
         for a in self._grafo.edges:
