@@ -37,8 +37,13 @@ class Model:
     def getGraphDetails(self):
         return self._grafo.number_of_nodes(), self._grafo.number_of_edges()
 
-    def getNeighborsSorted(self, source): #source = squadra di partenza selezionata
+    def getNeighborsSorted(self, source):#source = squadra di partenza selezionata
+        source = [n for n in self._grafo.nodes if n.teamCode == source][0]
+        #Scorro n nodi del grafo e prendo il primo [0] che ha l'attributo teamCode = source (siccome source è una stringa del temCode)
         vicini = nx.neighbors(self._grafo, source) #lista
+        #prima di controllare i vicini --> passa il nodo source e controlla se sta dentro al grafo
+        # ERRORE (source era una stringa e nodi nel grafo un oggetto --> non comparabili) - soluzione riga 42
+
         #return vicini
 
         viciniOrdinati = [] #lista di tuple con vicino e peso arco tra source e vicino

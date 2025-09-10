@@ -29,9 +29,11 @@ class DAO():
         cursor = conn.cursor(dictionary=True)
 
         result = []
-        query = """ select *
+        query = """ 
+                    select *
                     from teams t 
-                    where t.`year` = %s"""
+                    where t.`year` = %s
+                """
 
         cursor.execute(query, (year,)) #prendo non solo la query ma anche l'inserimento dell'year
 
