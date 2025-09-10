@@ -23,7 +23,7 @@ class Model:
 
         self._grafo.add_nodes_from(nodes)
 
-        #per gli archi
+        #per gli archi non serve una query perchè COLLEGANO TUTTE LE COPPIE DISTINTE quindi ciclo i nodi
         for n1 in self._grafo.nodes:
             for n2 in self._grafo.nodes:
                 if n1 != n2:
