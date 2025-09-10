@@ -7,6 +7,7 @@ class Model:
     def __init__(self):
         self._grafo = nx.Graph()
         self._idMap = {}
+        self._idMapTeamsCode = {}   #creata per vicini
 
     def getAllYears(self):
         return DAO.getAllYears()
@@ -21,6 +22,10 @@ class Model:
         for t in nodes:
             self._idMap[t.ID] = t
 
+        #creata per vicini
+        for tCode in nodes :
+            self._idMapTeamsCode[tCode.teamCode] = tCode
+
         self._grafo.add_nodes_from(nodes)
 
         #per gli archi non serve una query perchè COLLEGANO TUTTE LE COPPIE DISTINTE quindi ciclo i nodi
@@ -34,21 +39,21 @@ class Model:
             self._grafo[a[0]][a[1]]["weight"] += salaries[a[0]] + salaries[a[1]]
 
 
+
+
     def getGraphDetails(self):
         return self._grafo.number_of_nodes(), self._grafo.number_of_edges()
 
     def getNeighborsSorted(self, source):#source = squadra di partenza selezionata
-        source = [n for n in self._grafo.nodes if n.teamCode == source][0]
-        #Scorro n nodi del grafo e prendo il primo [0] che ha l'attributo teamCode = source (siccome source è una stringa del temCode)
-        vicini = nx.neighbors(self._grafo, source) #lista
-        #prima di controllare i vicini --> passa il nodo source e controlla se sta dentro al grafo
-        # ERRORE (source era una stringa e nodi nel grafo un oggetto --> non comparabili) - soluzione riga 42
+        #per fare i vicini controllo nodo e source (ora source è una stringa presa dal controller come valure quindi stringa)
+        # nodo è un oggetto quindi devo trasformare source in oggetto --> creo idMap nuova perchè deve avere valore TeamCode
+        sourceOgg = self._idMapTeamsCode[source]
+        vicini = nx.neighbors(self._grafo, sourceOgg)
 
-        #return vicini
 
         viciniOrdinati = [] #lista di tuple con vicino e peso arco tra source e vicino
         for v in vicini:
-            viciniOrdinati.append((v, self._grafo[source][v]["weight"]))
+            viciniOrdinati.append((v, self._grafo[sourceOgg][v]["weight"]))
 
         viciniOrdinati.sort(key=lambda x: x[1], reverse=True) #[x]:1 ordino secondo il peso
         return viciniOrdinati
