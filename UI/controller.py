@@ -14,7 +14,7 @@ class Controller:
             self._view._ddAnno.options.append(ft.dropdown.Option(y))
         self._view.update_page()
 
-        #yearsDD = [] --> perchè creo lista vuota?
+        #yearsDD = []
         #for y in years:
             #yearsDD.append(ft.dropdown.Option(year))
         # self._update_page()
@@ -27,15 +27,8 @@ class Controller:
         #stampo
         for t in teams:
             self._view._txtOutSquadre.controls.append(ft.Text(f"{t.teamCode}"))
-            self._view._ddSquadra.options.append(ft.dropdown.Option(data=t, text=t.teamCode, on_click=self.readDDTeams))
+            self._view._ddSquadra.options.append(ft.dropdown.Option(data=t, text=t.teamCode)) #dato il dato t stampo il text, quindi teamCode
         self._view.update_page()
-
-    def readDDTeams(self, e):
-        if e.control.data is None:
-            self._selectedTeam = None
-        else:
-            self._selectedTeam = e.control.data
-        print(f"readDDTeams called -- {self._selectedTeam}")
 
 
     def handleCreaGrafo(self, e):

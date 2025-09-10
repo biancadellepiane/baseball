@@ -5,7 +5,6 @@ from database.DAO import DAO
 
 class Model:
     def __init__(self):
-        self._allTeams = []
         self._grafo = nx.DiGraph()
         self._idMap = {}
 
@@ -13,23 +12,16 @@ class Model:
         return DAO.getAllYears()
 
     def getTeamsofYear(self, year):
-        self._allTeams = DAO.getTeamsofYear(year)
-        self._idMap = {}
-        for t in self._allTeams:
-            self._idMap[t.ID] = t
-
-        #return DAO.getTeamsofYear(year)
-        return self._allTeams
-
+        return DAO.getTeamsofYear(year)
 
     def buildGraph(self, year):
         self._grafo.clear()
+        nodes = DAO.getTeamsofYear(year)
+        self._idMap = {}
+        for t in nodes:
+            self._idMap[t.ID] = t
 
-        if len(self._allTeams) == 0:
-            print("Lista squadre vuota")
-            return
-
-        self._grafo.add_nodes_from(self._allTeams)
+        self._grafo.add_nodes_from(nodes)
 
         #per gli archi
         for n1 in self._grafo.nodes:
@@ -47,6 +39,7 @@ class Model:
 
     def getNeighborsSorted(self, source): #source = squadra di partenza selezionata
         vicini = nx.neighbors(self._grafo, source) #lista
+        #return vicini
 
         viciniOrdinati = [] #lista di tuple con vicino e peso arco tra source e vicino
         for v in vicini:
